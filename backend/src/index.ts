@@ -7,6 +7,7 @@ app.use(cors({ origin: '*' }))
 
 const port = 3000
 
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use('/api', indexRouter)
 

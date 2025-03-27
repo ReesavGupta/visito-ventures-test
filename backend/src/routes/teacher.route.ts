@@ -11,7 +11,19 @@ export const teacherRouter = Router()
 
 teacherRouter.get('/', getAllTeachers)
 
-teacherRouter.post('/create', upload.single('image'), createTeacher)
+teacherRouter.post(
+  '/create',
+  (req, res, next) => {
+    console.log(`before ...`)
+    next()
+  },
+  upload.single('image'),
+  (req, res, next) => {
+    console.log('Middleware executed')
+    next()
+  },
+  createTeacher
+)
 
 teacherRouter.put('/update/:teacherId', updateTeacher)
 
