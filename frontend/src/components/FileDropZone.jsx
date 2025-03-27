@@ -1,34 +1,44 @@
-// File: src/components/FileDropZone.jsx
-import React, { useCallback } from "react";
-import { useDropzone } from "react-dropzone";
+import React, { useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
 
-const FileDropZone = () => {
-  const onDrop = useCallback((acceptedFiles) => {
-    // image = acceptedFiles[0].path;
-    console.log("Dropped files:", acceptedFiles[0].path);
-  }, []);
+const FileDropZone = ({ onChange }) => {
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      if (acceptedFiles.length > 0) {
+        const file = acceptedFiles[0]
+        console.log('Dropped file:', file)
+        onChange(file) // file back pass garnu parsa
+      }
+    },
+    [onChange]
+  )
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: 'image/*', // Only accept images
+    multiple: false, // accept 1 file only hai ta
+  })
 
   return (
-    <div  
+    <div
       {...getRootProps()}
       style={{
-        border: "2px dashed #cccccc",
-        borderRadius: "8px",
-        padding: "20px",
-        textAlign: "center",
-        cursor: "pointer",
+        border: '2px dashed #cccccc',
+        borderRadius: '8px',
+        padding: '20px',
+        textAlign: 'center',
+        cursor: 'pointer',
+        backgroundColor: isDragActive ? '#f0f0f0' : '#ffffff',
       }}
     >
       <input {...getInputProps()} />
       {isDragActive ? (
-        <p>Drop the files here...</p>
+        <p>Drop the file here...</p>
       ) : (
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>Drag & drop an image here, or click to select one</p>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default FileDropZone;
+export default FileDropZone

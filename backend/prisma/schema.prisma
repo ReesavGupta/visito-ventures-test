@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:mysecretpassword@localhost:5432/postgres?schema=public"
+  url      = "postgresql://postgres:mypassword@localhost:5432/postgres?schema=public"
 }
 
 model School {

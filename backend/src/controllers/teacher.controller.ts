@@ -17,19 +17,33 @@ export const getAllTeachers = async (req: Request, res: Response) => {
 // Create a new teacher
 export const createTeacher = async (req: Request, res: Response) => {
   try {
+    console.log(`we are here`)
     const { name, age, schoolId, active } = req.body
     const teacherCode = generateRanomId('T')
 
+    console.log(`this is req.body: `, req.body)
+
     const imagePath = req.file ? `/uploads/${req.file.filename}` : null
+
+    console.log(`this is the imagePath: ${imagePath}`)
+    console.log({
+      name,
+      age,
+      schoolId,
+      teacherCode,
+      imagePath,
+    })
 
     const newTeacher = await prisma.teacher.create({
       data: {
+        
         name,
         age: Number(age),
         schoolId: Number(schoolId),
         active: active === 'true',
         teacherCode,
         image: imagePath,
+
       },
     })
 
