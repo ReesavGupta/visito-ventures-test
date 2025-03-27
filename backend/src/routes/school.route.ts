@@ -12,10 +12,10 @@ export const schoolRouter = Router()
 schoolRouter.get('/', getAllSchools)
 
 //to get a specific id
-schoolRouter.get('/:id', getAllSchools)
+// schoolRouter.get('/:id', getAllSchools)
 
 //school with teacher list
-schoolRouter.get('/teacher/:id', getAllSchools)
+// schoolRouter.get('/teacher/:id', getAllSchools)
 
 // Route to create a school
 schoolRouter.post('/create', createSchool)
