@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 
-const FileDropZone = ({ onChange }) => {
+const FileDropZone = ({ onChange , color}) => {
   const onDrop = useCallback(
     (acceptedFiles) => {
       if (acceptedFiles.length > 0) {
@@ -29,6 +29,7 @@ const FileDropZone = ({ onChange }) => {
         textAlign: 'center',
         cursor: 'pointer',
         backgroundColor: isDragActive ? '#f0f0f0' : '#ffffff',
+        color:color
       }}
     >
       <input {...getInputProps()} />
