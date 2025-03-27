@@ -18,9 +18,9 @@ export const getAllSchools = async () => {
     }
 }
 
-export const updateSchool = async (data) =>{
+export const updateSchool = async (schoolId, data) =>{
     try {
-        const response = await axios.put(`http://localhost:3000/api/school/update/${data}`);
+        const response = await axios.put(`http://localhost:3000/api/school/update/${schoolId}`, data);
         return response.data;
     } catch (error) {
         console.error(error);
