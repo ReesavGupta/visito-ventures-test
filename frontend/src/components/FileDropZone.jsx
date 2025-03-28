@@ -25,18 +25,20 @@ const FileDropZone = ({ onChange , color}) => {
       style={{
         border: '2px dashed #cccccc',
         borderRadius: '8px',
-        padding: '20px',
+        padding: '10px',
         textAlign: 'center',
         cursor: 'pointer',
         backgroundColor: isDragActive ? '#f0f0f0' : '#ffffff',
-        color:color
+        color:color,
+        height:'5vh',
+        textJustify:'auto'
       }}
     >
       <input {...getInputProps()} />
       {isDragActive ? (
         <p>Drop the file here...</p>
       ) : (
-        <p>Drag & drop an image here, or click to select one</p>
+        <p>Select Image</p>
       )}
     </div>
   )

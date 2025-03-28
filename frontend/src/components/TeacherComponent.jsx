@@ -4,7 +4,8 @@ import { createTeacher, getAllTeachers, deleteTeacher, updateTeacher } from '../
 import FileDropZone from './FileDropZone'
 import { FiTrash2, FiEdit } from 'react-icons/fi'
 const TeacherComponent = () => {
-    const teacherNameRef = useRef()
+    const teacherFirstNameRef = useRef()
+    const teacherLastNameRef = useRef()
     const ageRef = useRef()
     const idRef = useRef()
 
@@ -20,7 +21,7 @@ const TeacherComponent = () => {
     const editTeacherageRef = useRef()
     const editTeacherSchoolIdRef = useRef()
     // const edit   
-    const handleFormSubmit =  (e) => {
+    const handleFormSubmit = (e) => {
         e.preventDefault()
         const data = {
             "name": editTeacherNameRef.current.value,
@@ -31,7 +32,7 @@ const TeacherComponent = () => {
         // console.log(editTeacherId, data)
         try {
 
-            updateTeacher(editTeacherId, data).then((res)=>{
+            updateTeacher(editTeacherId, data).then((res) => {
                 console.log(res)
             })
 
@@ -52,11 +53,13 @@ const TeacherComponent = () => {
 
 
     const handleSubmit = async (e) => {
-
         e.preventDefault()
+        let date = new Date()
+        const age = date.getFullYear() - Number(ageRef.current.value.slice(0, 4))
+        console.log(age)
         const formData = new FormData()
-        formData.append('name', teacherNameRef.current.value)
-        formData.append('age', ageRef.current.value)
+        formData.append('name', teacherFirstNameRef.current.value + " " + teacherLastNameRef.current.value)
+        formData.append('age', age)
         formData.append('schoolId', idRef.current.value)
 
         if (selectedImage) {
@@ -84,11 +87,22 @@ const TeacherComponent = () => {
 
     return (
         <div className='bg-black text-white' style={{ height: '100vh' }}>
-            <MenuBar />
-            <div className='flex flex-col justify-content-center align-items-center mt-2 text-center container mx-auto' style={{ opacity: (addteacher || editTeacher) ? '0' : '100' }}>
+            <MenuBar >
+                <button className=' bg-black text-white border-0 rounded p-2' onClick={() => {
+                    setAddTeacher(prev=>!prev)
+                }}>+ Add Teacher  </button>
+            </MenuBar>
+
+            <div className='d-flex w-100 ms-0 m m-5 pe-5 justify-content-end align-items-center' >
+
+
+
+            </div>
+
+            <div className='flex-column justify-content-center align-items-center mt-2 text-center container mx-auto' style={{ display: !(addteacher || editTeacher) ? 'flex' : 'none', width: '100%' }}>
                 <h2>Teacher Details</h2>
                 {teacherData.length > 0 ?
-                    <div className='flex flex-col justify-content-center align-items-center pb-2 mt-3'>
+                    <div className='flex flex-col justify-content-center align-items-center pb-2 mt-3 w-75'>
                         <div className="row text-center border border-grey mx-auto w-75 fw-bold fs-6">
                             <div className="col border-end border-grey">Index</div>
                             <div className="col border-end border-grey">Name</div>
@@ -135,85 +149,93 @@ const TeacherComponent = () => {
 
                 }
 
-                <div className='d-flex w-100 justify-content-center align-items-center' >
 
-                    <button className=' bg-secondary border rounded' onClick={() => {
-                        setAddTeacher(true)
-                    }}>Add teacher</button>
-
-                </div>
             </div>
 
 
 
             {addteacher &&
-                <div className="container bg-secondary w-70 text-center mt-3 gap-3" style={{ position: "absolute", top: '25vh', right: "3vw", zIndex: "1000" }}
+                <div className="container d-flex flex-column justify-content-center bg-secondary text-center py-2  mx-auto" style={{ position: "absolute", top: '20vh', right: "30vw", zIndex: "1000", height: '69vh', width: '40vw' }}
                 >
-                    <h2>Add Teacher</h2>
+                    <h2 className='h-25 pt-5'>Add Teacher</h2>
                     <form
                         onSubmit={handleSubmit}
-                        className="d-flex flex-column justify-content-center align-items-center"
+                        className="d-flex flex-column align-items-center"
                     >
-                        {/* Teacher Name */}
-                        <div className="form-group w-50 text-center mt-3 fw-bold text">
-                            <label htmlFor="teacherName">Teacher Name</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="teacherName"
-                                placeholder="John Doe"
-                                ref={teacherNameRef}
-                                required
-                            />
+                        <div className="name d-flex gap-3 justify-content-center w-50 ">
+                            {/* Teacher Name */}
+                            <div className="form-group h-25 w-30 text-start fw-bold text">
+                                <label htmlFor="teacherName">First Name<span style={{ color: 'red' }}>*</span></label>
+                                <input
+                                    type="text"
+                                    className="form-control "
+                                    id="firstName"
+                                    placeholder="John"
+                                    ref={teacherFirstNameRef}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group w-30 h-25 text-start fw-bold text">
+                                <label htmlFor="teacherName">Last Name<span style={{ color: 'red' }}>*</span></label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="firstName"
+                                    placeholder="Doe"
+                                    ref={teacherLastNameRef}
+                                    required
+                                />
+                            </div>
                         </div>
-
                         {/* Age */}
-                        <div className="form-group w-50 text-center mt-3 fw-bold text">
-                            <label htmlFor="age">Age</label>
+                        <div className="form-group w-50 h-25 text-start  fw-bold text">
+                            <label htmlFor="age">Age<span style={{ color: 'red' }}>*</span></label>
                             <input
-                                type="number"
+                                type="date"
                                 className="form-control"
                                 id="age"
                                 placeholder="Enter age"
                                 ref={ageRef}
                                 required
+                                style={{ color: 'grey' }}
                             />
                         </div>
+                        <div className='d-flex justify-content-center align-items-center gap-3 h-25 w-50'>
+                            {/* School ID */}
+                            <div className="form-group w-50 text-start  fw-bold text">
+                                <label htmlFor="schoolId">School ID<span style={{ color: 'red' }}>*</span></label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="schoolId"
+                                    placeholder="1"
+                                    ref={idRef}
+                                    required
+                                />
+                            </div>
 
-                        {/* School ID */}
-                        <div className="form-group w-50 text-center mt-3 fw-bold text">
-                            <label htmlFor="schoolId">School ID</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="schoolId"
-                                placeholder="1"
-                                ref={idRef}
-                                required
-                            />
+                            {/* File Upload */}
+                            <div className="form-group w-50 text-start  fw-bold text">
+                                <label htmlFor="image">Upload Image<span style={{ color: 'red' }}>*</span></label>
+                                <FileDropZone
+                                    onChange={(file) => {
+                                        console.log('Selected File:', file)
+                                        setSelectedImage(file)
+                                    }}
+                                    color={"grey"}
+                                />
+                            </div>
                         </div>
-
-                        {/* File Upload */}
-                        <div className="form-group w-50 text-center mt-3 fw-bold text">
-                            <label htmlFor="image">Upload Image</label>
-                            <FileDropZone
-                                onChange={(file) => {
-                                    console.log('Selected File:', file)
-                                    setSelectedImage(file)
-                                }}
-                                color={"grey"}
-                            />
-                        </div>
-                        <div >
+                        <div className='h-25 mt-5'>
 
                             <button
-                                className="btn bg-black text-white m-3"
+                                className="btn bg-black text-white mx-3"
                                 type="submit"
                             >
                                 Submit
                             </button>
                             <button
-                                className="btn bg-black text-white m-3"
+                                className="btn bg-black text-white mx-3"
                                 type="reset"
                                 onClick={() => {
                                     setAddTeacher(false)
@@ -235,7 +257,7 @@ const TeacherComponent = () => {
                         </div>
                         <div className="form-group row">
                             <label htmlFor="age">age</label>
-                            <input type="text" name="age" id="age" ref={editTeacherageRef} />
+                            <input type="date" name="age" id="age" ref={editTeacherageRef} />
                         </div>
                         <div className="form-group row">
                             <label htmlFor="schoolId">School Id</label>
@@ -247,9 +269,9 @@ const TeacherComponent = () => {
                                 setEditActive(prev => !prev)
                             }} />
                         </div>
-                        <div className='d-flex gap-3 justify-content-center mt-3'>
+                        <div className='d-flex gap-3 justify-content-end'>
                             <button type="submit" className='border-0 rounded bg-black text-white fw-bold'>Submit</button>
-                            <button type="submit" className='border-0 rounded bg-black text-white fw-bold' onClick={()=>{
+                            <button type="submit" className='border-0 rounded bg-black text-white fw-bold' onClick={() => {
                                 setEditTeacher(false)
                             }}>Cancel</button>
                         </div>
